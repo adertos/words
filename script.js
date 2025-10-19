@@ -6,7 +6,12 @@ let currentSet = '';
 window.onload = () => {
     loadSetsFromStorage();
     populateSetSelector();
-
+    
+    document.getElementById('answer-input').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            checkAnswer();
+        }
+    });
     // Gwarantowane załadowanie głosów (dla iOS / Safari)
     if ('speechSynthesis' in window) {
         speechSynthesis.onvoiceschanged = populateVoiceSelector;
@@ -231,6 +236,7 @@ function testSelectedVoice() {
     speechSynthesis.cancel();
     speechSynthesis.speak(utterance);
 }
+
 
 
 
