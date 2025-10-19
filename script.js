@@ -7,9 +7,17 @@ window.onload = () => {
     loadSetsFromStorage();
     populateSetSelector();
 
+    // Gwarantowane załadowanie głosów (dla iOS / Safari)
+    if ('speechSynthesis' in window) {
+        speechSynthesis.onvoiceschanged = populateVoiceSelector;
 
-    // Poczekaj chwilę na głosy
-    setTimeout(populateVoiceSelector, 500);
+        // awaryjne wywołanie po czasie
+        setTimeout(() => {
+            if (speechSynthesis.getVoices().length === 0) {
+                populateVoiceSelector();
+            }
+        }, 1500);
+    }
 };
 
 // Wczytaj dane z localStorage
@@ -223,5 +231,6 @@ function testSelectedVoice() {
     speechSynthesis.cancel();
     speechSynthesis.speak(utterance);
 }
+
 
 
