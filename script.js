@@ -96,22 +96,47 @@ function startQuiz() {
 
 // Wymowa słowa
 function speakCurrentWord() {
-    if ('speechSynthesis' in window) {
+    if (!('speechSynthesis' in window)) {
+        alert("Twoja przeglądarka nie obsługuje syntezy mowy.");
+        return;
+    }
+
+    const speak = () => {
         const utterance = new SpeechSynthesisUtterance(currentWord);
         utterance.lang = 'en-GB'; // lub 'en-US'
+
+        // Wybierz preferowany głos
+        const voices = speechSynthesis.getVoices();
+
+        // Najlepsze opcje dla Safari:
+        const preferredVoice = voices.find(v =>
+            v.lang.startsWith('en') &&
+            (
+                v.name.includes("Samantha") ||
+                v.name.includes("Daniel") ||
+                v.name.includes("Google UK English") ||
+                v.name.includes("UK") ||
+                v.name.includes("US")
+            )
+        );
+
+        if (preferredVoice) {
+            utterance.voice = preferredVoice;
+        }
+
         utterance.rate = 0.9;
         utterance.pitch = 1;
         utterance.volume = 1;
 
-        // Spróbuj użyć "Google UK English Male" jeśli dostępny
-        const voices = speechSynthesis.getVoices();
-        const preferred = voices.find(v => v.name.includes("Google UK English"));
-        if (preferred) utterance.voice = preferred;
-
-        speechSynthesis.cancel(); // Anuluj poprzednią, jeśli jeszcze trwa
+        speechSynthesis.cancel(); // Dla pewności
         speechSynthesis.speak(utterance);
+    };
+
+    // Upewnij się, że głosy są załadowane
+    if (speechSynthesis.getVoices().length === 0) {
+        speechSynthesis.onvoiceschanged = speak;
     } else {
-        alert("Twoja przeglądarka nie obsługuje syntezy mowy.");
+        speak();
     }
 }
 
@@ -145,4 +170,5 @@ function deleteCurrentSet() {
     document.getElementById('status').textContent = 'Zestaw został usunięty.';
     alert(`Usunięto zestaw: ${selectedDate}`);
 }
+
 
