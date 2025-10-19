@@ -3,6 +3,8 @@ let words = [];   // Aktualnie załadowane słowa
 let currentWord = '';
 let currentSet = '';
 
+utterance.lang = 'en-GB'; // lub 'en-US'
+
 window.onload = () => {
     loadSetsFromStorage();
     populateSetSelector();
@@ -143,3 +145,4 @@ function deleteCurrentSet() {
     document.getElementById('status').textContent = 'Zestaw został usunięty.';
     alert(`Usunięto zestaw: ${selectedDate}`);
 }
+
