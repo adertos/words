@@ -17,24 +17,24 @@
     <select id="set-selector" onchange="loadSelectedSet()"></select>
     
     <textarea id="words-input" placeholder="Insert words in English, separated by comma eg. apple,water, "></textarea>
-    <button onclick="saveWords()">Dodaj jako nowy zestaw (data)</button>
+    <button onclick="saveWords()"> Add as a new set (data)</button>
 </section>
 
 <section id="voice-tester">
-    <h2>🎤 Testuj i wybierz głos </h2>
+    <h2>🎤 Test and select voice </h2>
     <select id="voice-selector"></select>
-    <button onclick="testSelectedVoice()">🔊 Odtwórz testowy głos</button>
+    <button onclick="testSelectedVoice()">🔊 Play test voice</button>
 </section>
     
 
-<button onclick="deleteCurrentSet()">🗑️ Usuń wybrany zestaw</button>
+<button onclick="deleteCurrentSet()">🗑️ Delete selected set</button>
     
     <section id="quiz">
         <h2>Quiz: Posłuchaj i napisz słowo</h2>
         <p id="status">Kliknij "Start Quiz", aby zacząć!</p>
         <input type="text" id="answer-input" placeholder="Wpisz słowo">
         <button onclick="checkAnswer()">Sprawdź</button>
-        <button onclick="startQuiz()">Start Quiz</button>
+            <button onclick="startQuiz()">Start Quiz</button>
         <button onclick="speakCurrentWord()">Powtórz wymowę</button>
     </section>
     
