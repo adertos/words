@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Nauka Angielskich Słów</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Nauka Angielskich Słów z Quizem</h1>
+    
+<section id="add-words">
+    <h2>Zarządzaj zestawami słów</h2>
+    
+    <label for="set-selector">Wybierz zestaw:</label>
+    <select id="set-selector" onchange="loadSelectedSet()"></select>
+    
+    <textarea id="words-input" placeholder="Wpisz słowa po angielsku, oddzielone przecinkami"></textarea>
+    <button onclick="saveWords()">Dodaj jako nowy zestaw (data)</button>
+</section>
+
+<select id="set-selector" onchange="loadSelectedSet()"></select>
+<button onclick="deleteCurrentSet()">🗑️ Usuń wybrany zestaw</button>
+    
+    <section id="quiz">
+        <h2>Quiz: Posłuchaj i napisz słowo</h2>
+        <p id="status">Kliknij "Start Quiz", aby zacząć!</p>
+        <input type="text" id="answer-input" placeholder="Wpisz słowo">
+        <button onclick="checkAnswer()">Sprawdź</button>
+        <button onclick="startQuiz()">Start Quiz</button>
+        <button onclick="speakCurrentWord()">Powtórz wymowę</button>
+    </section>
+    
+    <script src="script.js"></script>
+</body>
+</html>
