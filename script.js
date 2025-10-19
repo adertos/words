@@ -3,8 +3,6 @@ let words = [];   // Aktualnie załadowane słowa
 let currentWord = '';
 let currentSet = '';
 
-utterance.lang = 'en-GB'; // lub 'en-US'
-
 window.onload = () => {
     loadSetsFromStorage();
     populateSetSelector();
@@ -225,4 +223,5 @@ function testSelectedVoice() {
     speechSynthesis.cancel();
     speechSynthesis.speak(utterance);
 }
+
 
