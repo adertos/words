@@ -9,6 +9,7 @@ window.onload = () => {
     
     document.getElementById('answer-input').addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
+            e.preventDefault();
             checkAnswer();
         }
     });
@@ -236,6 +237,7 @@ function testSelectedVoice() {
     speechSynthesis.cancel();
     speechSynthesis.speak(utterance);
 }
+
 
 
 
