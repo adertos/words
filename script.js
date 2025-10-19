@@ -155,6 +155,7 @@ function speakCurrentWord() {
 // Sprawdzenie odpowiedzi
 function checkAnswer() {
     const answer = document.getElementById('answer-input').value.trim().toLowerCase();
+    console.log("Odpowiedź:", answer, "Oczekiwane słowo:", currentWord);
     if (answer === currentWord) {
         document.getElementById('status').textContent = 'Brawo! Poprawnie.';
         setTimeout(startQuiz, 1000);
@@ -237,6 +238,7 @@ function testSelectedVoice() {
     speechSynthesis.cancel();
     speechSynthesis.speak(utterance);
 }
+
 
 
 
