@@ -68,7 +68,7 @@ function populateSetSelector() {
 
     const option = document.createElement('option');
     option.value = '';
-    option.textContent = '-- Wybierz zestaw --';
+    option.textContent = '-- Choose set --';
     selector.appendChild(option);
 
     Object.keys(allSets).sort().forEach(date => {
