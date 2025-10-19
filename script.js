@@ -8,6 +8,10 @@ utterance.lang = 'en-GB'; // lub 'en-US'
 window.onload = () => {
     loadSetsFromStorage();
     populateSetSelector();
+
+
+    // Poczekaj chwilę na głosy
+    setTimeout(populateVoiceSelector, 500);
 };
 
 // Wczytaj dane z localStorage
@@ -103,36 +107,32 @@ function speakCurrentWord() {
 
     const speak = () => {
         const utterance = new SpeechSynthesisUtterance(currentWord);
-        utterance.lang = 'en-GB'; // lub 'en-US'
 
-        // Wybierz preferowany głos
+        // Użyj wcześniej wybranego głosu, jeśli jest dostępny
         const voices = speechSynthesis.getVoices();
 
-        // Najlepsze opcje dla Safari:
-        const preferredVoice = voices.find(v =>
-            v.lang.startsWith('en') &&
-            (
-                v.name.includes("Samantha") ||
-                v.name.includes("Daniel") ||
-                v.name.includes("Google UK English") ||
-                v.name.includes("UK") ||
-                v.name.includes("US")
-            )
-        );
+        if (!selectedVoice && localStorage.getItem('preferredVoice')) {
+            selectedVoice = voices.find(v => v.name === localStorage.getItem('preferredVoice'));
+        }
 
-        if (preferredVoice) {
-            utterance.voice = preferredVoice;
+        if (selectedVoice) {
+            utterance.voice = selectedVoice;
+            utterance.lang = selectedVoice.lang;
+        } else {
+            // Domyślna próba
+            utterance.lang = 'en-GB';
+            const fallback = voices.find(v => v.name.includes("Google UK English") || v.name.includes("Samantha"));
+            if (fallback) utterance.voice = fallback;
         }
 
         utterance.rate = 0.9;
         utterance.pitch = 1;
         utterance.volume = 1;
 
-        speechSynthesis.cancel(); // Dla pewności
+        speechSynthesis.cancel();
         speechSynthesis.speak(utterance);
     };
 
-    // Upewnij się, że głosy są załadowane
     if (speechSynthesis.getVoices().length === 0) {
         speechSynthesis.onvoiceschanged = speak;
     } else {
@@ -171,4 +171,58 @@ function deleteCurrentSet() {
     alert(`Usunięto zestaw: ${selectedDate}`);
 }
 
+let selectedVoice = null;
+
+// Załaduj dostępne głosy i wypełnij <select>
+function populateVoiceSelector() {
+    const selector = document.getElementById('voice-selector');
+    const voices = speechSynthesis.getVoices();
+
+    selector.innerHTML = '';
+
+    voices
+        .filter(v => v.lang.startsWith('en')) // tylko angielskie głosy
+        .forEach((voice, index) => {
+            const option = document.createElement('option');
+            option.value = voice.name;
+            option.textContent = `${voice.name} (${voice.lang})`;
+            selector.appendChild(option);
+        });
+
+    // Jeśli coś było wcześniej zapisane – wybierz to
+    const savedVoice = localStorage.getItem('preferredVoice');
+    if (savedVoice) {
+        const found = Array.from(selector.options).find(opt => opt.value === savedVoice);
+        if (found) {
+            selector.value = savedVoice;
+            selectedVoice = voices.find(v => v.name === savedVoice);
+        }
+    }
+}
+
+// Po wybraniu i kliknięciu "Odtwórz"
+function testSelectedVoice() {
+    const selector = document.getElementById('voice-selector');
+    const voiceName = selector.value;
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name === voiceName);
+
+    if (!voice) {
+        alert("Nie znaleziono wybranego głosu.");
+        return;
+    }
+
+    selectedVoice = voice;
+    localStorage.setItem('preferredVoice', voice.name);
+
+    const utterance = new SpeechSynthesisUtterance("Hello! This is a test of the selected English voice.");
+    utterance.voice = voice;
+    utterance.lang = voice.lang;
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utterance);
+}
 
