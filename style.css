@@ -50,8 +50,9 @@ select {
     position: fixed;
     top: 10px;
     right: 10px;
-    height: 20px;   /* bardzo mały obrazek */
+    height: 50px;   /* bardzo mały obrazek */
     width: auto;    /* zachowuje proporcje */
     z-index: 1000; /* żeby było nad innymi elementami */
 }
+
 
