@@ -86,7 +86,7 @@ function loadSelectedSet() {
         words = allSets[selectedDate];
         currentSet = selectedDate;
         alert(`Załadowano zestaw z dnia ${selectedDate}`);
-        document.getElementById('status').textContent = 'Click "Start Quiz" to begin ';
+        document.getElementById('status').textContent = 'Click "Start Quiz",to begin ';
     } else {
         words = [];
         currentSet = '';
