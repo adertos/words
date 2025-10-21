@@ -43,13 +43,13 @@ function saveSetsToStorage() {
 function saveWords() {
     const input = document.getElementById('words-input').value.trim();
     if (!input) {
-        alert("Wpisz jakieś słowa!");
+        alert("Add words!");
         return;
     }
 
     const wordList = input.split(',').map(w => w.trim().toLowerCase()).filter(w => w);
     if (wordList.length === 0) {
-        alert("Nie podano żadnych poprawnych słów.");
+        alert("Please add words.");
         return;
     }
 
@@ -57,7 +57,7 @@ function saveWords() {
     allSets[today] = wordList;
     saveSetsToStorage();
     populateSetSelector();
-    alert(`Zapisano zestaw z datą ${today}`);
+    alert(`Word set saved with date ${today}`);
     document.getElementById('words-input').value = '';
 }
 
@@ -85,8 +85,8 @@ function loadSelectedSet() {
     if (selectedDate && allSets[selectedDate]) {
         words = allSets[selectedDate];
         currentSet = selectedDate;
-        alert(`Załadowano zestaw z dnia ${selectedDate}`);
-        document.getElementById('status').textContent = 'Kliknij "Start Quiz",aby zacząć ';
+        alert(`Loaded set as of ${selectedDate}`);
+        document.getElementById('status').textContent = 'Click "Start Quiz" to begin ';
     } else {
         words = [];
         currentSet = '';
@@ -101,12 +101,12 @@ function pickRandomWord() {
 // Wystartuj quiz
 function startQuiz() {
     if (words.length === 0) {
-        alert('Najpierw wybierz lub dodaj zestaw słów!');
+        alert('Select data set first!');
         return;
     }
     pickRandomWord();
     speakCurrentWord();
-    document.getElementById('status').textContent = 'Posłuchaj i napisz słowo.';
+    document.getElementById('status').textContent = 'Listen and write word.';
     document.getElementById('answer-input').value = '';
 }
 
@@ -155,12 +155,12 @@ function speakCurrentWord() {
 // Sprawdzenie odpowiedzi
 function checkAnswer() {
     const answer = document.getElementById('answer-input').value.trim().toLowerCase();
-    console.log("Odpowiedź:", answer, "Oczekiwane słowo:", currentWord);
+    console.log("Answer:", answer, "Correct word:", currentWord);
     if (answer === currentWord) {
-        document.getElementById('status').textContent = 'Brawo! Poprawnie.';
+        document.getElementById('status').textContent = 'Brawo! Correct.';
         setTimeout(startQuiz, 1000);
     } else {
-        document.getElementById('status').textContent = `Źle! Poprawne słowo: ${currentWord}`;
+        document.getElementById('status').textContent = `Wrong! Correct spelling: ${currentWord}`;
         speakCurrentWord();
     }
 }
